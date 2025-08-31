@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Botão Copiar Email</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: transparent;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .copy-btn {
+      display: flex;
+      align-items: center;
+      background: #0052cc;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 50px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      gap: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    .copy-btn:hover {
+      transform: scale(1.05);
+      background: #0041a8;
+    }
+
+    .icon {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+
+    .copy-icon {
+      width: 28px;
+      height: 28px;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    #email-text {
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    .copied {
+      color: #00ff99;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <button class="copy-btn" onclick="copyEmail()">
+    <!-- Ícone da esquerda -->
+    <svg class="icon" viewBox="0 0 24 24" fill="#00e6ff" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 21c0 .5.4 1 1 1h4c.6 0 1-.5 1-1v-1H9v1zm3-19C8.1 2 5 5.1 5 9c0 2.4 1.2 4.5 3 5.7V17c0 .5.4 1 1 1h6c.6 0 1-.5 1-1v-2.3c1.8-1.3 3-3.4 3-5.7 0-3.9-3.1-7-7-7z"/>
+    </svg>
+
+    <!-- Texto -->
+    <span id="email-text">ideiasincriveistutoriais@gmail.com</span>
+
+    <!-- Ícone copiar -->
+    <svg class="copy-icon" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 
+               6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 
+               21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/>
+    </svg>
+  </button>
+
+  <script>
+    function copyEmail() {
+      const emailSpan = document.getElementById("email-text");
+      const originalText = emailSpan.textContent;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        // Método moderno (HTTPS ou localhost)
+        navigator.clipboard.writeText(originalText).then(() => {
+          showCopied(emailSpan, originalText);
+        }).catch(() => {
+          fallbackCopy(originalText, emailSpan);
+        });
+      } else {
+        // Fallback para navegadores antigos
+        fallbackCopy(originalText, emailSpan);
+      }
+    }
+
+    function fallbackCopy(text, emailSpan) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      showCopied(emailSpan, text);
+    }
+
+    function showCopied(emailSpan, originalText) {
+      emailSpan.textContent = "✅ Copiado!";
+      emailSpan.classList.add("copied");
+      setTimeout(() => {
+        emailSpan.textContent = originalText;
+        emailSpan.classList.remove("copied");
+      }, 2000);
+    }
+  </script>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'977ed5c186b5b54f',t:'MTc1NjY2NzQ5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
